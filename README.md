@@ -1,7 +1,4 @@
-<video width="600" controls>
-  <source src="https://github.com/oismaelash/lab-trans-reservations-fastapi-backend/raw/refs/heads/main/demo.mp4" type="video/mp4">
-  Seu navegador não suporta vídeo HTML5.
-</video>
+[Ver vídeo de demonstração](https://github.com/oismaelash/lab-trans-reservations-fastapi-backend/raw/refs/heads/main/demo.mp4)
 
 # Room Reservation System - Backend
 
