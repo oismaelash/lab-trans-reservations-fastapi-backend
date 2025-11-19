@@ -1,3 +1,8 @@
+<video width="600" controls>
+  <source src="https://github.com/oismaelash/lab-trans-reservations-fastapi-backend/raw/refs/heads/main/demo.mp4" type="video/mp4">
+  Seu navegador não suporta vídeo HTML5.
+</video>
+
 # Room Reservation System - Backend
 
 RESTful API developed with **FastAPI**, **PostgreSQL** and **SQLAlchemy** for room reservation management with conflict validation, soft delete and location and room administration.
