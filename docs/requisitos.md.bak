@@ -1,0 +1,87 @@
+# Requisitos do Sistema de Reserva de Salas de Reuniões
+
+## 1. Visão Geral
+Sistema web para gerenciamento de reservas de salas de reuniões com funcionalidades completas de CRUD e validações de conflito de horários.
+
+## 2. Modelo de Dados
+
+### 2.1. Entidade: Reserva
+
+#### Campos Obrigatórios:
+- **local** (string, obrigatório): Localização da sala
+- **sala** (string, obrigatório): Nome/identificação da sala
+- **data_inicio** (datetime, obrigatório): Data e horário de início da reserva
+- **data_fim** (datetime, obrigatório): Data e horário de término da reserva
+- **responsavel** (string, obrigatório): Nome do responsável pela reserva
+
+#### Campos Opcionais:
+- **cafe** (boolean, opcional): Indica se há necessidade de café
+- **quantidade_cafe** (integer, opcional): Quantidade de café (requerido se `cafe = true`)
+- **descricao** (string, opcional): Descrição adicional da reserva
+
+#### Campos do Sistema:
+- **id** (integer, auto-incremento): Identificador único da reserva
+- **created_at** (datetime): Data de criação do registro
+- **updated_at** (datetime): Data da última atualização
+
+## 3. Endpoints da API
+
+### 3.1. Listagem de Reservas
+- **GET** `/api/reservas`
+  - Retorna lista de todas as reservas
+  - Suporte a filtros (opcional): por data, sala, local, responsável
+  - Paginação (opcional)
+
+### 3.2. Detalhes de uma Reserva
+- **GET** `/api/reservas/{id}`
+  - Retorna detalhes completos de uma reserva específica
+
+### 3.3. Criação de Reserva
+- **POST** `/api/reservas`
+  - Cria uma nova reserva
+  - Valida conflitos de horário antes de criar
+  - Retorna erro 409 (Conflict) se houver conflito
+
+### 3.4. Atualização de Reserva
+- **PUT/PATCH** `/api/reservas/{id}`
+  - Atualiza uma reserva existente
+  - Valida conflitos de horário antes de atualizar
+  - Retorna erro 409 (Conflict) se houver conflito
+
+### 3.5. Exclusão de Reserva
+- **DELETE** `/api/reservas/{id}`
+  - Remove uma reserva
+  - Retorna confirmação da exclusão
+
+## 4. Validações e Regras de Negócio
+
+### 4.1. Validação de Conflito de Horários
+- Uma reserva não pode ter sobreposição de horário com outra reserva na mesma sala
+- Verificar se `data_inicio` e `data_fim` não se sobrepõem a reservas existentes
+- Considerar apenas reservas ativas (não excluídas)
+
+### 4.2. Validações de Campos
+- `data_inicio` deve ser anterior a `data_fim`
+- `data_inicio` e `data_fim` não podem ser no passado (ou permitir conforme regra de negócio)
+- Se `cafe = true`, então `quantidade_cafe` é obrigatório e deve ser > 0
+- Todos os campos obrigatórios devem ser preenchidos
+
+### 4.3. Validações de Formato
+- Datas devem estar em formato ISO 8601 ou formato aceito pela API
+- Campos de texto devem respeitar limites de caracteres
+
+## 5. Respostas da API
+
+### 5.1. Códigos de Status HTTP
+- **200 OK**: Operação bem-sucedida (GET, PUT, DELETE)
+- **201 Created**: Reserva criada com sucesso (POST)
+- **400 Bad Request**: Dados inválidos ou faltando campos obrigatórios
+- **404 Not Found**: Reserva não encontrada
+- **409 Conflict**: Conflito de horário detectado
+- **500 Internal Server Error**: Erro interno do servidor
+
+### 5.2. Formato de Resposta
+- Sucesso: Retornar objeto JSON com os dados da reserva
+- Erro: Retornar objeto JSON com mensagem de erro descritiva
+
+
